@@ -85,7 +85,6 @@ M.change_text = function(selection, text)
   vim.api.nvim_buf_set_text(0, first_pos[1] - 1, first_pos[2] - 1, last_pos[1] - 1, last_pos[2], text)
 end
 
-
 -- INFO: File operations
 
 --- Search for the file "*.css" in the current directory and parent directories.
@@ -143,7 +142,6 @@ M.extract_from_file = function (content, pattern)
   return captured_data
 end
 
-
 -- INFO: CSS operations
 
 local extract_key_value = function(data)
@@ -169,7 +167,6 @@ M.get_css_attribute = function(fpath, properties)
   return key_value_pairs
 end
 
-
 -- INFO: Buffer operations
 
 --- Get the content of the current line
@@ -181,7 +178,7 @@ M.get_current_line_content = function()
 end
 
 -- Thanks to: https://github.com/jsongerber/nvim-px-to-rem
-M.show_virtual_text = function(virtual_text, current_line, namespace)
+M.show_virtual_text = function(virtual_text, current_line, namespace, style)
   local extmark = vim.api.nvim_buf_get_extmark_by_id(0, namespace, namespace, {})
   if extmark ~= nil then
     vim.api.nvim_buf_del_extmark(0, namespace, namespace)
@@ -190,7 +187,7 @@ M.show_virtual_text = function(virtual_text, current_line, namespace)
   if #virtual_text > 0 then
     vim.api.nvim_buf_set_extmark(0, tonumber(namespace), (current_line - 1), 0,
       {
-        virt_text = { {table.concat(virtual_text, " "), "Comment"} },
+        virt_text = { {table.concat(virtual_text, " "), style or "Comment"} },
         id = namespace,
         priority = 100,
       }
